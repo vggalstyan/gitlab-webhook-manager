@@ -1,0 +1,16 @@
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+RewriteEngine on
+RewriteRule ^$ public/ [L]
+RewriteRule (.*) public/$1 [L]
+
+# Запретить список содержимого каталогов
+Options -Indexes
+
+# Защитить конфигурационные файлы
+<FilesMatch "\.(env|htaccess|htpasswd|ini|phar|sh|sql)$">
+    Require all denied
+</FilesMatch>
